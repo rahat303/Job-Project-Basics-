@@ -1,0 +1,43 @@
+{% extends 'include/m.html' %}
+{% block title %}Profile Page{% endblock title %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="static\ProfilePage.css">
+</head>
+<body>
+    {% if user.user_type == "recruiter" %}
+    <div class="profile-container">
+        <h2>Profile</h2>
+        <div class="profile-details">
+            <img src="{{ user.Recruiter_Profile.profile_pic }}" alt="Profile Image" class="profile-image">
+            <h3>{{ user.display_name }}</h3>
+            <p><strong>User Type:</strong> {{ user.user_type }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Contract Number:</strong> {{ user.Recruiter_Profile.contract_number }}</p>
+            <p><strong>Bio:</strong> {{ user.Recruiter_Profile.bio }}</p>
+            <a href="{% url 'edit_profile' %}" class="btn">Edit Profile</a>
+            <a href="" class="btn">View All Posts</a>
+        </div>
+    </div>
+    {% elif user.user_type == "seeker" %}
+    <div class="profile-container">
+        <h2>Profile</h2>
+        <div class="profile-details">
+            <img src="/{{ user.Seeker_Profile.profile_pic }}" alt="Profile Image" class="profile-image">
+            <h3>{{ user.display_name }}</h3>
+            <p><strong>User Type:</strong> {{ user.user_type }}</p>
+            <p><strong>Skill:</strong> {{ user.Seeker_Profile.skill }}</p>
+            <p><strong>Website:</strong> {{ user.Seeker_Profile.web_site }}</p>
+            <a href="{% url 'edit_profile' %}" class="btn">Edit Profile</a>
+            <a href="" class="btn">View applyed job</a>
+        </div>
+    </div>
+    {% endif %}
+</body>
+</html>
+{% endblock body %}

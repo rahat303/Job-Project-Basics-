@@ -1,0 +1,109 @@
+{% extends 'include/m.html' %}
+{% block title %}Profile Page{% endblock title %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="/static/edit_profile.css">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Edit Profile</h2>
+        {% if user.user_type == "recruiter" %}
+        <img src="/{{ user.Recruiter_Profile.profile_pic }}" alt="Profile Image" class="profile-image">
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="profile_picture">Profile Picture</label>
+                <input type="file" id="profile_picture" name="Profile_Picture" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="user_type">User Type</label>
+                <input type="text" id="user_type" name="user_type" value="{{user.user_type}}" class="form-control" readonly required>
+            
+            </div>
+            <div class="form-group">
+                <label for="display_name">Display Name</label>
+                <input type="text" id="display_name" name="DisplayName" value={{user.display_name}} class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="Email" value="{{user.email}}" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="contract_number">Contract Number</label>
+                <input type="text" id="contract_number" name="ContractNumber" value="{{user.Recruiter_Profile.contract_number}}" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="bio">Bio</label>
+                <textarea id="bio" name="Bio" class="form-control" rows="4">{{user.Recruiter_Profile.bio}}</textarea>
+            </div>
+            <button type="submit" class="btn">Save Changes</button>
+        </form>
+        {% elif user.user_type == "seeker" %}
+        <img src="/{{ user.Seeker_Profile.profile_pic }}" alt="Profile Image" class="profile-image">
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="profile_picture">Profile Picture:</label>
+                <input type="file" id="profile_picture" name="Profile_Picture">
+            </div>
+            <div class="form-group">
+                <label for="display_name">Display Name:</label>
+                <input type="text" id="display_name" name="DisplayName" value="{{user.display_name}}" required>
+            </div>
+            <div class="form-group">
+                <label for="skills">Skills:</label>
+                <select id="skills" name="skills" required>
+                    <option value="{{user.Seeker_Profile.skill}}"selected >
+                        {% if user.Seeker_Profile.skill == programing %}
+                        Programing
+                        {% elif user.Seeker_Profile.skill == networking %}
+                        Networking
+                        {% elif user.Seeker_Profile.skill == hadworking %}
+                        Hadworking
+                        {% elif user.Seeker_Profile.skill == acounting %}
+                        Acounting
+                        {% endif %}
+                    </option>
+                    {% if user.Seeker_Profile.skill == "programing" %}
+                        <option value="networking">Networking</select>
+                        <option value="hadworking">Hadworking</select>
+                        <option value="acounting">Acounting</select>
+                    {% elif user.Seeker_Profile.skill == "networking" %}
+                        <option value="programing">Programing</select>
+                        <option value="hadworking">Hadworking</select>
+                        <option value="acounting">Acounting</select>
+                    {% elif user.Seeker_Profile.skill == "hadworking" %}
+                        <option value="programing">Programing</select>
+                        <option value="networking">Networking</select>
+                        <option value="acounting">Acounting</select>
+                    {% elif user.Seeker_Profile.skill == "acounting" %}
+                        <option value="programing">Programing</select>
+                        <option value="networking">Networking</select>
+                        <option value="hadworking">Hadworking</select>
+                    {% endif %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="Email" value="{{user.email}}" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="contract_number">Contract Number:</label>
+                <input type="text" id="contract_number" name="ContractNumber" value="{{user.Seeker_Profile.contract_number}}" required>
+            </div>
+            <div class="form-group">
+                <label for="website_url">Website URL:</label>
+                <input type="url" id="website_url" name="WebsiteUrl" value="{{user.Seeker_Profile.web_site}}" required>
+            </div>
+            <button type="submit" class="btn">Submit</button>
+        </form>
+        {% endif %}
+    </div>
+</body>
+</html>
+{% endblock body %}
