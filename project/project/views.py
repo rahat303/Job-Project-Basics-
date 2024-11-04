@@ -76,15 +76,23 @@ def edit_profile(req):
             RP.save()
             return redirect("ProfilePage")
     elif CU.user_type == "seeker":
+        
+        seeker_data = SeekerProfile.objects.get(user=CU)
+
         if req.method == "POST":
             CU.display_name=req.POST.get("DisplayName")
             CU.email=req.POST.get("Email")
-            CU.save()
+            
             RP = SeekerProfile.objects.get(user=CU)
             RP.contract_number=req.POST.get("ContractNumber")
             RP.web_site=req.POST.get("WebsiteUrl")
+            RP.skill=req.POST.get("skills")
             if req.FILES.get("Profile_Picture"):
                 RP.profile_pic=req.FILES.get("Profile_Picture")
+            CU.save()
             RP.save()
             return redirect("ProfilePage")
-    return render(req,"User_profile\edit_profile.html")
+    context = {
+                'seeker_data':seeker_data,
+            }
+    return render(req,"User_profile\edit_profile.html", context)
